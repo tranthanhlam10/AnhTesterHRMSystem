@@ -1,7 +1,5 @@
 ﻿using OpenQA.Selenium;
 using System.Collections;
-using System.Threading;
-
 
 namespace AnhTesterHRM.bases
 {
@@ -42,21 +40,31 @@ namespace AnhTesterHRM.bases
         By elenment30nTable = By.CssSelector("#xin_table > tbody > tr:nth-child(2)");
         By btnDeletePj2 = By.CssSelector("#xin_table > tbody > tr:nth-child(2) > td.sorting_1 > div > span:nth-child(2) > button");
 
+        // su dung singleton cho project nay ??
+        private static HomePage instance;
 
-        public string CheckHomepageInfor(string cost, string day, string prize, string asset)
+        //private HomePage() { }
+
+        public static HomePage GetInstance()
+        {
+            if(instance == null)
+                instance = new HomePage();
+            return instance;
+        }
+
+        public bool CheckHomepageInfor(string cost, string day, string prize, string asset)
         {
             try
             {
-                Thread.Sleep(100);
                 if (driver.FindElement(txtCostRequest).Text == cost && driver.FindElement(txtDayOff).Text == day && driver.FindElement(txtPrizes).Text == prize && driver.FindElement(txtTotalAsset).Text == asset)
                 {
-                    return "pass";
+                    return true;
                 }
-                else return "fail";
+                else return false;
             }
             catch (NoSuchElementException)
             {
-                return "pass";
+                return true;
             }
         }
 
@@ -84,10 +92,8 @@ namespace AnhTesterHRM.bases
             try
             {
                 driver.FindElement(homeRequestLB2).Click();
-                Thread.Sleep(200);
                 if (driver.FindElement(dbTakeRequest2).Displayed) // wrong locator ??
-                {
-                    Thread.Sleep(200);
+                {                   
                     driver.FindElement(dbTakeRequest2).Click();
 
                     return "https://hrm.anhtester.com/erp/leave-list";
@@ -107,9 +113,7 @@ namespace AnhTesterHRM.bases
         public string CheckDropDownMenu()
         {
             driver.FindElement(featureDM).Click();
-            Thread.Sleep(20);
             driver.FindElement(eventDM).Click();
-            Thread.Sleep(10);
 
             return "https://hrm.anhtester.com/erp/events-list";
         }
@@ -119,7 +123,6 @@ namespace AnhTesterHRM.bases
             try
             {
                 driver.Navigate().GoToUrl("https://hrm.anhtester.com/erp/projects-list");
-                Thread.Sleep(200);
                 driver.FindElement(elementOnTable).Click();
                 if (driver.FindElement(btnDetailPjE).Displayed)
                 {
@@ -142,7 +145,6 @@ namespace AnhTesterHRM.bases
             try
             {
                 driver.Navigate().GoToUrl("https://hrm.anhtester.com/erp/projects-list");
-                Thread.Sleep(2000);
                 driver.FindElement(elenment30nTable).Click();
                 if (driver.FindElement(btnDeletePj2).Displayed)
                 {

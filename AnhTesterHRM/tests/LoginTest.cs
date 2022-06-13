@@ -8,8 +8,7 @@ namespace AnhTesterHRM.tests
     [TestFixture]
     class LoginTest : BaseTest
     {
-        LoginPage loginPage = new LoginPage();
-        static ExcelReader excelReader = new ExcelReader("C:/Thanh Lam Tran/CsharpExcelReader.xlsx", "Sheet1");
+        static ExcelReader excelReader = new ExcelReader("Resources/CsharpExcelReader.xlsx", "Sheet1");
 
 
         [Test]
@@ -19,22 +18,23 @@ namespace AnhTesterHRM.tests
         [TestCase("client01", "123456")]
         public void LoginTestBasic(string userName, string passWord)
         {
-            Assert.AreEqual("https://hrm.anhtester.com/erp/desk", loginPage.Login(userName, passWord));
+
+            Assert.AreEqual("https://hrm.anhtester.com/erp/desk", LoginPage.GetInstance().Login(userName, passWord));
         }
 
         [Test]
         [Category("Login")]
         public void LogoutTest()
         {
-            loginPage.Login("admin01", "123456");
-            Assert.AreNotEqual("Cant not logout this page", loginPage.Logout());
+            LoginPage.GetInstance().Login("admin01", "123456");
+            Assert.AreNotEqual("Cant not logout this page", LoginPage.GetInstance().Logout());
         }
 
 
         [Test]
         public void LoginTestExcelFile()
         {
-             Assert.AreEqual("https://hrm.anhtester.com/erp/desk", loginPage.Login(excelReader.GetCellData(1), excelReader.GetCellData(2))); 
+             Assert.AreEqual("https://hrm.anhtester.com/erp/desk", LoginPage.GetInstance().Login(excelReader.GetCellData(1), excelReader.GetCellData(2))); 
         }
     }
 }

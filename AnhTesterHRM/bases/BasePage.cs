@@ -4,6 +4,7 @@ using OpenQA.Selenium.Chrome;
 using System;
 using WebDriverManager;
 using WebDriverManager.DriverConfigs.Impl;
+using AnhTesterHRM.DriverManage;
 
 namespace AnhTesterHRM.bases
 {
@@ -14,21 +15,10 @@ namespace AnhTesterHRM.bases
 
         public void SetupBrowser(string browser)
         {
-            switch (browser)
-            {
-                case "chrome":
-                    new DriverManager().SetUpDriver(new ChromeConfig());
-                    driver = new ChromeDriver();
-                    driver.Manage().Window.Maximize();
-                    driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(20);
-                    break;
-                case "edge":
-                    new DriverManager().SetUpDriver(new EdgeConfig());
-                    driver = new EdgeDriver();
-                    driver.Manage().Window.Maximize();
-                    driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(20);
-                    break;
-            }
+            driver = BDriverFactory.InitDriver(browser);
+            driver.Manage().Window.Maximize();
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5000);
+            driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(2000);
         }
 
         public void TearDown()

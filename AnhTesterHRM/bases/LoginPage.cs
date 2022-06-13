@@ -1,5 +1,4 @@
 ﻿using OpenQA.Selenium;
-using System.Threading;
 
 namespace AnhTesterHRM.bases
 {
@@ -13,6 +12,18 @@ namespace AnhTesterHRM.bases
         // Get loactor for Logout testing
         By btnLogout = By.XPath("/html/body/div[2]/div/div[1]/div/div/div[2]/a");
 
+        // use Singleton
+        private static LoginPage Instance;
+
+        private LoginPage() { }
+
+        public static LoginPage GetInstance()
+        {
+            if(Instance == null)
+                Instance = new LoginPage();
+            return Instance;
+        }
+
         public string Login(string userName, string passWord)
         {
             driver.Navigate().GoToUrl("https://hrm.anhtester.com/");
@@ -20,7 +31,6 @@ namespace AnhTesterHRM.bases
             driver.FindElement(txtPassWord).SendKeys(passWord);
             driver.FindElement(btnLogin).Click();
 
-            Thread.Sleep(3000);
             // this url need timeout to load new url
             return driver.Url;
         }
@@ -31,7 +41,6 @@ namespace AnhTesterHRM.bases
             if (driver.FindElement(btnLogout).Displayed)
             {
                 driver.FindElement(btnLogout).Click();
-                Thread.Sleep(2000);
                 return driver.Url;
             }
             else

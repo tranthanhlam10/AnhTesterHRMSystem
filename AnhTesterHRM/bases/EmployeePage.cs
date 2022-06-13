@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using OpenQA.Selenium;
 
 namespace AnhTesterHRM.bases
@@ -22,10 +21,22 @@ namespace AnhTesterHRM.bases
         //Get locator for search info Employee bay map
         By headerDataRow = By.XPath("/html/body/div[2]/div/div[4]/div[2]/div/div/div[2]/div/table/tbody/tr/th");
 
+        private static EmployeePage Instance;
+
+        private EmployeePage() 
+        {}
+
+        public static EmployeePage GetInstance()
+        {
+            if(Instance == null)
+                Instance = new EmployeePage();
+            return Instance;
+        }
+
+
         public int FindEmRole()
         {
             driver.Navigate().GoToUrl("https://hrm.anhtester.com/erp/staff-list");
-            Thread.Sleep(2000);
             List<IWebElement> roleList = new List<IWebElement>(driver.FindElements(roleName));
             int i = 0;
             foreach (var role in roleList)
@@ -43,7 +54,6 @@ namespace AnhTesterHRM.bases
         public int CountTotalRowsAndCols()
         {
             driver.Navigate().GoToUrl("https://hrm.anhtester.com/erp/staff-list");
-            Thread.Sleep(2000);
             List<IWebElement> cols = new List<IWebElement>(driver.FindElements(colPath));
             List<IWebElement> rows = new List<IWebElement>(driver.FindElements(rowPath));
             int total = cols.Count + rows.Count;
@@ -54,7 +64,6 @@ namespace AnhTesterHRM.bases
         {
             bool isExist = false;
             driver.Navigate().GoToUrl("https://hrm.anhtester.com/erp/staff-list");
-            Thread.Sleep(2000);
             List<IWebElement> nameCol = new List<IWebElement>(driver.FindElements(nameCols));
             List<IWebElement> data = new List<IWebElement>(driver.FindElements(rowData));
 
@@ -79,7 +88,6 @@ namespace AnhTesterHRM.bases
             /// html / body / div[2] / div / div[4] / div[2] / div / div / div[2] / div / table / tbody / tr / th
             List<IWebElement> headerData = new List<IWebElement>(driver.FindElements(headerDataRow));
             //List to stored headerdata
-            Thread.Sleep(20);
             List<string> saveHeaderData = new List<string>();
             //A loop to add header data to list 3
             foreach (IWebElement loop in headerData)
@@ -87,7 +95,6 @@ namespace AnhTesterHRM.bases
                 string data = loop.Text;
                 saveHeaderData.Add(data);
             }
-            Thread.Sleep(20);
             //List to get data from rows
             /// html / body / div[2] / div / div[4] / div[2] / div / div / div[2] / div / table / tbody / tr
             /// //*[@id="xin_table"]/tbody/tr[6]/td[1]

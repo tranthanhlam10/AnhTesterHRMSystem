@@ -5,55 +5,54 @@ namespace AnhTesterHRM.tests
 {
     class HomePageTest : BaseTest
     {
-        HomePage homePage = new HomePage();
-        LoginPage loginPage = new LoginPage();
+       
 
         [SetUp]
         public void SetupBeforeTestHomePage()
         {
-            loginPage.Login("admin01", "123456");
+            LoginPage.GetInstance().Login("leader01", "123456");
         }
 
         //Pass
         [Test]
         public void CheckHomeValueTest()
         {
-            Assert.AreEqual("pass", homePage.CheckHomepageInfor("₫0.00", "0", "0", "0"));
+            Assert.IsTrue(HomePage.GetInstance().CheckHomepageInfor("₫0.00", "0", "0", "0"));
         }
 
         //Pass
         [Test]
         public void CheckLeftBar()
         {
-            Assert.AreEqual(5, homePage.CheckLeftBarClick());
+            Assert.AreEqual(5, HomePage.GetInstance().CheckLeftBarClick());
         }
 
         //Fail, bug on Xpath
         [Test]
         public void CheckDropDown()
         {
-            Assert.AreEqual("https://hrm.anhtester.com/erp/leave-list", homePage.CheckDropDown());
+            Assert.AreEqual("https://hrm.anhtester.com/erp/leave-list", HomePage.GetInstance().CheckDropDown());
         }
 
         //Pass
         [Test]
         public void CheckHomeDropDownBtn()
         {
-            Assert.IsNotNull(homePage.CheckDropDownMenu());
+            Assert.IsNotNull(HomePage.GetInstance().CheckDropDownMenu());
         }
 
 
         [Test]
         public void CheckViewDetailProject()
         {
-            Assert.AreSame("View project detail successfully", homePage.CheckViewProjectDetail());
+            Assert.AreSame("View project detail successfully", HomePage.GetInstance().CheckViewProjectDetail());
         }
 
 
         [Test]
         public void CheckDeleteProject()
         {
-            Assert.AreSame("Delete project detail successfully", homePage.CheckDeleteProject());
+            Assert.IsNotNull(HomePage.GetInstance().CheckDeleteProject());
         }
 
     }
